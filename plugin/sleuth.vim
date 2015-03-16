@@ -67,11 +67,7 @@ function! s:guess(lines) abort
   endfor
 
   if heuristics.hard && !heuristics.spaces
-    if exists('*shiftwidth')
-      return {'expandtab': 0, 'shiftwidth': 0}
-    else
-      return {'expandtab': 0, 'shiftwidth': &tabstop}
-    endif
+    return {'expandtab': 0, 'shiftwidth': &tabstop}
   elseif heuristics.soft != heuristics.hard
     let options.expandtab = heuristics.soft > heuristics.hard
     if heuristics.hard
@@ -121,7 +117,10 @@ function! s:apply_if_ready(options) abort
 endfunction
 
 function! s:detect() abort
-  if &ft == 'python' | return | endif
+  if &modifiable == 0 || &filetype ==# 'python'
+    return
+  endif
+
   let options = s:guess(getline(1, 1024))
   if s:apply_if_ready(options)
     return
