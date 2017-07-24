@@ -125,7 +125,7 @@ function! s:apply_if_ready(options) abort
 endfunction
 
 function! s:detect() abort
-  if &modifiable == 0 || &filetype ==# 'python' || &filetype ==# 'haskell'
+  if &modifiable == 0 || &filetype ==# 'python' || &filetype ==# 'haskell' || &buftype ==# 'help'
     return
   endif
 
